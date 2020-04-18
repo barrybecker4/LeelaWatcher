@@ -13,7 +13,7 @@ Before you can use the LeelaWatcher you must first obtain a current copy of Leel
 
 You will also need to install the [Java Runtime Environment](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 
-After you have Java, Leela Zero and autogtp, you can run the latest version of LeelaWatcher ([found here](https://github.com/fsparv/LeelaWatcher/releases)) or build it locally with `.gradlew assemble`. If you choose to build locally, then the jar can be found in the build/libs directory.
+After you have Java, Leela Zero and autogtp, you can run the latest version of LeelaWatcher ([found here](https://github.com/barrybecker4/LeelaWatcher/releases)) or build it locally with `.gradlew assemble`. If you choose to build locally, then the jar can be found in the build/libs directory.
 
 On Linux (what I use) the command looks like this
 
