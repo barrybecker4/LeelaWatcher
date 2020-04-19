@@ -40,7 +40,7 @@ import java.util.Set;
 public class MarkablePosition extends Position {
 
   // an array that marks up the position
-  private int[] marks = new int[19];
+  private final int[] marks = new int[19];
 
   /**
    * Instantiate a markable position based on a preexisting position object.

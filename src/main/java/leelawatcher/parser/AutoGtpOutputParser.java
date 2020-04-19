@@ -45,7 +45,7 @@ public class AutoGtpOutputParser {
           Pattern.compile(MOVE_PATTERN);
 
   private static final Pattern MOVE = Pattern.compile("(?:(.)(\\d+))|(pass)|(resign)");
-  private BoardView boardView;
+  private final BoardView boardView;
   private boolean inProgress = false;
 
   @SuppressWarnings("unused")
@@ -61,7 +61,7 @@ public class AutoGtpOutputParser {
 
   private String message;
 
-  private PropertyChangeSupport support = new PropertyChangeSupport(this);
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
 
   /**
@@ -149,7 +149,7 @@ public class AutoGtpOutputParser {
     if (x > 8) {
       x--;
     }
-    int y = Integer.valueOf(yNum) - 1;
+    int y = Integer.parseInt(yNum) - 1;
     return new PointOfPlay(x, y);
   }
 

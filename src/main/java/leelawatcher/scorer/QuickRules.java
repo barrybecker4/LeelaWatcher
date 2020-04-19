@@ -160,32 +160,3 @@ public class QuickRules extends AbstractRules {
     return false;
   }
 }
-
-
-/*
- * $Log$
- * Revision 1.6  2003/10/10 00:41:17  gus
- * updating the name of the position class
- *
- * Revision 1.5  2003/07/19 03:41:46  gus
- * comment out debugging prints
- *
- * Revision 1.4  2003/07/19 02:50:05  gus
- * New License based on the Apache License, Yeah open source :)
- *
- * Revision 1.3  2002/12/26 04:33:48  gus
- * Make pass a legal move
- *
- * Revision 1.2  2002/12/16 06:35:49  gus
- * Fixes that squash a bug that allowed ko to be violated
- * in certain cases.
- *
- * Revision 1.1.1.1  2002/12/15 07:02:57  gus
- * Initial import into cvs server running on Aptiva
- *
- * Revision 1.2  2002/02/27 04:08:23  togo
- * Added javadoc, and variable naming scheme to tsb.GoBoard board.java and
- * renamed it tsb.GoBoard.Board.java.
- *
- */
-

@@ -46,7 +46,7 @@ public abstract class AbstractRules implements Rules {
    * The number of liberties is equal to the number of ajacent empty
    * PointOfPlays on the board. This method is used in determining if a group
    * should or would be captured. Groups with no liberties are capturable.
-   * Counting is acheived by recursion to neighboring points not occupied by
+   * Counting is achieved by recursion to neighboring points not occupied by
    * stones of the opposite color. Recursion to an empty point  increments
    * the counter.
    * <p>
@@ -129,24 +129,4 @@ public abstract class AbstractRules implements Rules {
 
     return hasAlready;
   }
-
-
 }
-
-/*
- * $Log$
- * Revision 1.3  2003/07/19 02:50:05  gus
- * New License based on the Apache License, Yeah open source :)
- *
- * Revision 1.2  2002/12/16 06:35:49  gus
- * Fixes that squash a bug that allowed ko to be violated
- * in certain cases.
- *
- * Revision 1.1.1.1  2002/12/15 07:02:57  gus
- * Initial import into cvs server running on Aptiva
- *
- * Revision 1.2  2002/02/27 04:08:23  togo
- * Added javadoc, and variable naming scheme to tsb.GoBoard board.java and
- * renamed it tsb.GoBoard.Board.java.
- *
- */

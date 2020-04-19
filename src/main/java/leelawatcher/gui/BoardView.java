@@ -40,8 +40,8 @@ public class BoardView extends javax.swing.JPanel {
 
   private static final Dimension PREFERRED_SIZE = new Dimension(500, 500);
 
-  private Board theGame;
-  private ImageMaker goImages = new ImageMaker();
+  private final Board theGame;
+  private final ImageMaker goImages = new ImageMaker();
 
   /**
    * Creates new form boardView

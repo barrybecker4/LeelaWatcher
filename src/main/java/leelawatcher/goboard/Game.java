@@ -51,35 +51,30 @@ import java.util.Date;
 public class Game {
 
   // Basic info
-
-  private String _bName, _wName;     // Identify the players
-  private float _bRank, _wRank;      // Player ranks, -2.0 to -2.99 = 2kyu
-  private int _handi;               // how many handicap stones?
-  private float _komi;              // points to white in compensation
-  private int _boardSizeX;          // board size - 19x19 for now, non-square
+  private String bName, wName;     // Identify the players
+  private float bRank, wRank;      // Player ranks, -2.0 to -2.99 = 2kyu
+  private int handicap;               // how many handicap stones?
+  private float komi;              // points to white in compensation
+  private int boardSizeX;          // board size - 19x19 for now, non-square
   // to be imped later
-  private int _boardSizeY;
-  private String _gameName;         // text summary/title to game
-  private String _gameEvent;        // what event if any is this game part of
-  private String _gameResult;       // What was the outcome (if any)
-  private String _date;             // when?
-  private String _place;            // where?
-  private String _gameNotes;        // Additional info
+  private int boardSizeY;
+  private String gameName;         // text summary/title to game
+  private String gameEvent;        // what event if any is this game part of
+  private String gameResult;       // What was the outcome (if any)
+  private String date;             // when?
+  private String place;            // where?
+  private String gameNotes;        // Additional info
 
   // also add others? for backwards
-  // SGF compatability. Also need to research demarcation of variations.
-
+  // SGF compatibility. Also need to research demarcation of variations.
 
   // Play details
-
-  private String _ruleSet;          // what conventions is game played under
+  private String ruleSet;          // what conventions is game played under
 
   // The game itself
-
-  private Move _gameRoot;           // root of move tree, (see Move.java)
+  private Move gameRoot;           // root of move tree, (see Move.java)
 
   // Status information
-
   private int handiLeft;           // how many handicap stones may be placed
   private boolean gameOver;        // 2 consecutive passes set this to true
   private boolean whiteLast;       // true if it is black's move
@@ -88,16 +83,13 @@ public class Game {
   private Move prevMove;           // Points to last move
 
   // Functionality options
-
   private boolean remUndo;          // if true remember undo as a variation
   private boolean markUndos;        // if true prepend UNDO to comment
   private boolean tradHandi;        // if true, auto place handicap stones at
   //    traditional locations
   private boolean toStringIsSGF;      // if true toString conforms to SGF format
 
-  // to help keep track of objects, and debug problems, all objects number
-  // their instances.
-
+  // to help keep track of objects, and debug problems, all objects number their instances.
   private static long numInstances = 0;
   private long numThis;
 
@@ -113,32 +105,32 @@ public class Game {
    */
   public Game(String nameWhite, String nameBlack, int handicap,
               float ptsKomi) {
-    _bName = nameBlack;
-    _wName = nameWhite;
-    _bRank = -999.0f;
-    _wRank = -999.0f;
-    _handi = handicap;
+    bName = nameBlack;
+    wName = nameWhite;
+    bRank = -999.0f;
+    wRank = -999.0f;
+    this.handicap = handicap;
 
     handiLeft = handicap;
-    _komi = ptsKomi;
+    komi = ptsKomi;
 
-    _boardSizeX = 19;
-    _boardSizeY = 19;
+    boardSizeX = 19;
+    boardSizeY = 19;
 
-    _gameName = _wName + " vs. " + _bName;
-    _gameEvent = "Leela Zero Self Training";
-    _gameResult = "?";
-    _place = "Location Unknown";
-    _date = DateTimeFormatter.ISO_INSTANT.format(new Date().toInstant());
-    _gameNotes = "";
+    gameName = wName + " vs. " + bName;
+    gameEvent = "Leela Zero Self Training";
+    gameResult = "?";
+    place = "Location Unknown";
+    date = DateTimeFormatter.ISO_INSTANT.format(new Date().toInstant());
+    gameNotes = "";
 
-    _ruleSet = "Japanese";            // default probably will be japaneese
+    ruleSet = "Japanese";            // default probably will be japaneese
     tradHandi = true;               // traditions are defaults
-    _gameRoot = new RootNode();     // a white pass to root the game tree
+    gameRoot = new RootNode();     // a white pass to root the game tree
     gameOver = false;               // we have only just begun!
     whiteLast = true;               // this makes it black's move
-    currMove = _gameRoot;
-    prevMove = _gameRoot;
+    currMove = gameRoot;
+    prevMove = gameRoot;
     remUndo = true;                 // undos create variations
     markUndos = true;               // mark Undo variations
     toStringIsSGF = false;          // toString will be SGF after fully
@@ -154,20 +146,17 @@ public class Game {
    * by counting down the <code>handiLeft</code> variable. Black is allowed
    * consecutive moves until this variable reaches 0.
    *
-   * @param xcoor The x (horizontal) coordinate of the move.
+   * @param xcoor The x (horizontal) coordinate of the move.  0,0 at Upper Left
    * @param ycoor The y (vertical) coordinate of the move.
    * @return The reference to the move object that has been added
    * to the game tree.
    */
-
-  public Move doMove(int xcoor, int ycoor)    // 0,0 at Upper Left
-  {
+  public Move doMove(int xcoor, int ycoor) {
     char stoneColor = 'W';
 
     //Check that this move will fall on the board.
-
     boolean onBoard = false;
-    if ((xcoor >= 0 && xcoor < _boardSizeX) && (ycoor >= 0 && ycoor < _boardSizeY)) {
+    if ((xcoor >= 0 && xcoor < boardSizeX) && (ycoor >= 0 && ycoor < boardSizeY)) {
       onBoard = true;
     }
 
@@ -175,7 +164,6 @@ public class Game {
       return currMove;
 
     // figure out if there are handicap stones to be placed
-
     if (currMove.isRoot() && handiLeft > 0) {
       if (tradHandi) {
         // place handicap stones at star points.
@@ -192,7 +180,7 @@ public class Game {
     if (currMove.isSetup()) {
       stoneColor = whiteLast ? Move.MOVE_BLACK : Move.MOVE_WHITE;
     } else {
-      if (prevMove.isWhite() || (prevMove.isRoot() && (_handi == 0))) {
+      if (prevMove.isWhite() || (prevMove.isRoot() && (handicap == 0))) {
         stoneColor = 'B';            // if white moved last, black stone
       } else {
         stoneColor = 'W';
@@ -204,7 +192,6 @@ public class Game {
     whiteLast = !whiteLast;
 
     return currMove;
-
   }
 
   public void doSetup(char type, int xcoor, int ycoor, boolean blackToMove) {
@@ -223,7 +210,6 @@ public class Game {
   /**
    * Deletes the current move, and returns to the previous (parent) move.
    */
-
   public void delCurrMove() {
     Move dead = currMove;
     currMove = currMove.getParent();
@@ -234,7 +220,6 @@ public class Game {
    * Marks the current move if Undo marking is enabled and ascends the
    * move tree by one.
    */
-
   public void undoMove() {
     if (markUndos)
       currMove.setComment("UNDO " + currMove.getComment());
@@ -249,9 +234,8 @@ public class Game {
    *
    * @param aName The string containing the white player's name
    */
-
   public void setWName(String aName) {
-    _wName = aName;
+    wName = aName;
   }
 
   /**
@@ -259,9 +243,8 @@ public class Game {
    *
    * @return The string containing the white player's name
    */
-
   public String getWName() {
-    return _wName;
+    return wName;
   }
 
   /**
@@ -269,9 +252,8 @@ public class Game {
    *
    * @return The float vaue indicating the white player's rank.
    */
-
   public float getWRank() {
-    return _wRank;
+    return wRank;
   }
 
   /**
@@ -324,15 +306,15 @@ public class Game {
    * with 'k' indicating a kyu level rank 'd' indicating a dan
    * level rank and 'p' indicating a professional dan
    * level rank.
+   *
+   * Relies on setWRank to prevent illegal rank values! If you get a ERR rank
    */
-
-  public String getTradWRank()      // relies on setWRank to prevent illegal
-  {                                 // rank values! If you get a ERR rank
+  public String getTradWRank() {
     // setWRank has screwed up.
-    int intRank = (int) _wRank;
+    int intRank = (int) wRank;
     String tradRank = "ERR";
 
-    if (intRank < 30) {
+    if (intRank < -31) {
       return "?";
     }
     if (intRank <= -1) {
@@ -358,11 +340,9 @@ public class Game {
    *
    * @param aRank The float value indicating the white player's rank.
    */
-
   public void setWRank(float aRank) {
     if (aRank < -30.0f) {
       // message to user once GUI imped
-
       aRank = -30.0f;      // 30kyu is lowest possible rank in most
     }                        // ranking systems.
     if (aRank > -1.0f && aRank < 1.0f) {
@@ -370,8 +350,8 @@ public class Game {
     }                        // 1 kyu... kyu until you are a dan.
     if (aRank >= 8.0f) {
       // Add Code? or make part of a player object?:
-      // Confirm pro status before asigning a pro rank
-      // 7 Dan is generally the highest ametur rank
+      // Confirm pro status before assigning a pro rank
+      // 7 Dan is generally the highest amateur rank
       // the American Go Association has a rating system that goes
       // beyond +7 so a wIsPro flag may be added later.
       // Can't do this until GUI is built
@@ -379,7 +359,7 @@ public class Game {
     if (aRank >= 17.0f) {
       aRank = 16.99f;       // 9 Dan pro (9p) is highest rank
     }                         // possible
-    _wRank = aRank;
+    wRank = aRank;
   }
 
   /**
@@ -387,9 +367,8 @@ public class Game {
    *
    * @param aName The string containing the black player's name
    */
-
   public void setBName(String aName) {
-    _bName = aName;
+    bName = aName;
   }
 
   /**
@@ -397,9 +376,8 @@ public class Game {
    *
    * @return The string containing the black player's name
    */
-
   public String getBName() {
-    return _bName;
+    return bName;
   }
 
   /**
@@ -407,9 +385,8 @@ public class Game {
    *
    * @return The float vaue indicating the white player's rank.
    */
-
   public float getBRank() {
-    return _bRank;
+    return bRank;
   }
 
   /**
@@ -428,16 +405,15 @@ public class Game {
    * with 'k' indicating a kyu level rank 'd' indicating a dan
    * level rank and 'p' indicating a professional dan
    * level rank. ? indicates an unknown rank.
+   *
+   * Relies on setWRank to prevent illegal rank values! If you get a ? rank
    */
-
-  public String getTradBRank()      // relies on setWRank to prevent illegal
-  {                                 // rank values! If you get a ? rank
-    // setBRank has screwed up, or never been
-    // called
-    int intRank = (int) _bRank;
+  public String getTradBRank() {
+    // setBRank has screwed up, or never been called
+    int intRank = (int) bRank;
     String TradRank = "?";
 
-    if (intRank < 30) {
+    if (intRank < -30) {
       return "?";
     }
     if (intRank <= -1) {
@@ -464,7 +440,7 @@ public class Game {
 
   public void setBRank(float aRank) {
     if (aRank < -30.0f) {
-      // message to user once GUI imped
+      // message to user once GUI implemented
 
       aRank = -30.0f;      // 30kyu is lowest possible rank in most
     }                        // ranking systems.
@@ -472,8 +448,8 @@ public class Game {
       aRank = 0.01f;       // otherwise 0 is less than 1Dan and more
     }                        // than 1 kyu... and its only .01!
     if (aRank > 7.0f) {
-      // Confirm pro status before asigning a pro rank
-      // 7 Dan is generally the highest ametur rank
+      // Confirm pro status before assigning a pro rank
+      // 7 Dan is generally the highest amateur rank
       // the American Go Association has a rating system that goes
       // beyond +7 so a bIsPro flag may be needed later.
       // Can't do this until GUI is built
@@ -481,7 +457,7 @@ public class Game {
     if (aRank > 16.0f) {
       aRank = 16.0f;        // 9 Dan pro (9p) is highest rank
     }                         // possible
-    _bRank = aRank;
+    bRank = aRank;
   }
 
   /**
@@ -491,7 +467,7 @@ public class Game {
    *              about the game.
    */
   public void setGameNotes(String notes) {
-    _gameNotes = notes;
+    gameNotes = notes;
   }
 
   /**
@@ -500,9 +476,8 @@ public class Game {
    * @return notes    A String of any length containing general information
    * about the game.
    */
-
   public String getGameNotes() {
-    return _gameNotes;
+    return gameNotes;
   }
 
   /**
@@ -512,9 +487,8 @@ public class Game {
    *
    * @param someDate A String describing the date the game was played.
    */
-
   public void setDate(String someDate) {
-    _date = someDate;                // should be ISO format! Will add
+    date = someDate;                // should be ISO format! Will add
   }                                   // checks for this later.
 
   /**
@@ -524,9 +498,8 @@ public class Game {
    *
    * @return A String describing the date the game was played.
    */
-
   public String getDate() {
-    return _date;
+    return date;
   }
 
   /**
@@ -539,7 +512,7 @@ public class Game {
    */
 
   public String getPlace() {
-    return _place;
+    return place;
   }
 
   /**
@@ -550,9 +523,8 @@ public class Game {
    *
    * @param aPlace A string describing the local where the game occured.
    */
-
   public void setPlace(String aPlace) {
-    _place = aPlace;
+    place = aPlace;
   }
 
   /**
@@ -561,10 +533,9 @@ public class Game {
    *
    * @param square An integer specifying the size of the board.
    */
-
   public void setBoardSize(int square) {
-    _boardSizeX = square;
-    _boardSizeY = square;
+    boardSizeX = square;
+    boardSizeY = square;
   }
 
   /**
@@ -577,12 +548,11 @@ public class Game {
    * dimension is specified before the colon and the vertical
    * dimension is specified after the colon.
    */
-
   public String getBoardSize() {
-    if (_boardSizeX == _boardSizeY)
-      return _boardSizeX + "";
+    if (boardSizeX == boardSizeY)
+      return boardSizeX + "";
     else
-      return _boardSizeX + ":" + _boardSizeY;
+      return boardSizeX + ":" + boardSizeY;
   }
 
   /**
@@ -590,9 +560,8 @@ public class Game {
    *
    * @return An integer indicating the handicap for this game.
    */
-
   public int getHandi() {
-    return _handi;
+    return handicap;
   }
 
   /**
@@ -602,7 +571,6 @@ public class Game {
    *
    * @param handicap The number of handicap stones for black.
    */
-
   public void setHandi(int handicap) {
     if (tradHandi && handicap > 9) {
       handicap = 9;          // 9 is the max traditional handicap
@@ -611,7 +579,7 @@ public class Game {
     }
     if (handicap <= 1)
       handicap = 0;
-    _handi = handicap;
+    this.handicap = handicap;
     handiLeft = handicap;
   }
 
@@ -622,7 +590,6 @@ public class Game {
    *
    * @return The number of hanicap stones not yet placed.
    */
-
   public int getHandiLeft() {
     return handiLeft;
   }
@@ -634,9 +601,8 @@ public class Game {
    *
    * @return The komi points awarded to white.
    */
-
   public float getKomi() {
-    return _komi;
+    return komi;
   }
 
   /**
@@ -646,9 +612,8 @@ public class Game {
    *
    * @param ptsKomi The komi points awarded to white.
    */
-
   public void setKomi(float ptsKomi) {
-    _komi = ptsKomi;
+    komi = ptsKomi;
   }
 
   /**
@@ -658,9 +623,8 @@ public class Game {
    *
    * @return A name identifying the game.
    */
-
   public String getGameName() {
-    return _gameName;
+    return gameName;
   }
 
   /**
@@ -672,9 +636,8 @@ public class Game {
    *
    * @param aName A name identifying the game.
    */
-
   public void setGameName(String aName) {
-    _gameName = aName;
+    gameName = aName;
   }
 
   /**
@@ -683,9 +646,8 @@ public class Game {
    *
    * @return The name of the event.
    */
-
   public String getGameEvent() {
-    return _gameEvent;
+    return gameEvent;
   }
 
   /**
@@ -694,9 +656,8 @@ public class Game {
    *
    * @param anEvent The name of the event.
    */
-
   public void setGameEvent(String anEvent) {
-    _gameEvent = anEvent;
+    gameEvent = anEvent;
   }
 
   /**
@@ -713,9 +674,8 @@ public class Game {
    *
    * @return The name of the rule set used.
    */
-
   public String getRuleSet() {
-    return _ruleSet;
+    return ruleSet;
   }
 
   /**
@@ -732,9 +692,8 @@ public class Game {
    *
    * @param rules The name of the rule set used.
    */
-
   public void setRuleSet(String rules) {
-    _ruleSet = rules;
+    ruleSet = rules;
   }
 
   /**
@@ -745,9 +704,8 @@ public class Game {
    *
    * @return A string indicating the result of the game
    */
-
   public String getGameResult() {
-    return _gameResult;
+    return gameResult;
   }
 
   /**
@@ -758,10 +716,8 @@ public class Game {
    *
    * @param result A string indicating the result of the game
    */
-
-
   public void setGameResult(String result) {
-    _gameResult = result;
+    gameResult = result;
   }
 
   /**
@@ -769,7 +725,6 @@ public class Game {
    *
    * @param over True if the game has ended. False otherwise.
    */
-
   public void setGameOver(boolean over) {
     gameOver = over;
   }
@@ -779,7 +734,6 @@ public class Game {
    *
    * @return True if it is white's turn, false otherwise.
    */
-
   public boolean isWMove() {
     if (whiteLast)
       return false;
@@ -792,7 +746,6 @@ public class Game {
    *
    * @return True if the game has been completed false otherwise.
    */
-
   public boolean isGameOver() {
     return gameOver;
   }
@@ -806,7 +759,6 @@ public class Game {
    * @return The contents of the game in a format resembling
    * SGF version 4.
    */
-
   public String toString() {
     SGFbuilder temp = new SGFbuilder();
     return temp.buildSGF(this);
@@ -818,9 +770,8 @@ public class Game {
    * @return A reference to the topmost <code>Move</code> object
    * in the variation tree for this game.
    */
-
   public Move movesRoot() {
-    return _gameRoot;
+    return gameRoot;
   }
 
   /**
@@ -841,7 +792,6 @@ public class Game {
    *
    * @param aMove Th root of the move tree.
    */
-
   public static void dPrintMoves(Move aMove) {
     System.out.println(aMove);
     aMove.dPrint();
@@ -863,26 +813,25 @@ public class Game {
    * output is sent directly to standard output via
    * <code>System.out.println</code>
    */
-
   public void dPrint() {
     System.out.println("Game " + numThis + " of " + numInstances + " Games");
-    System.out.println("_bName=" + _bName);
-    System.out.println("_wName=" + _wName);
-    System.out.println("_bRank=" + _bRank);
-    System.out.println("_wRank=" + _wRank);
-    System.out.println("_handi=" + _handi);
-    System.out.println("_komi=" + _komi);
-    System.out.println("_boardSizeX=" + _boardSizeX);
-    System.out.println("_boardSizeY=" + _boardSizeY);
-    System.out.println("_gameName=" + _gameName);
-    System.out.println("_gameEvent=" + _gameEvent);
-    System.out.println("_gameResult=" + _gameResult);
-    System.out.println("_date =" + _date);
-    System.out.println("_place=" + _place);
-    System.out.println("_gameNotes =" + _gameNotes);
-    System.out.println("_ruleSet=" + _ruleSet);
+    System.out.println("bName=" + bName);
+    System.out.println("wName=" + wName);
+    System.out.println("bRank=" + bRank);
+    System.out.println("wRank=" + wRank);
+    System.out.println("handicap=" + handicap);
+    System.out.println("komi=" + komi);
+    System.out.println("boardSizeX=" + boardSizeX);
+    System.out.println("boardSizeY=" + boardSizeY);
+    System.out.println("gameName=" + gameName);
+    System.out.println("gameEvent=" + gameEvent);
+    System.out.println("gameResult=" + gameResult);
+    System.out.println("date =" + date);
+    System.out.println("place=" + place);
+    System.out.println("gameNotes =" + gameNotes);
+    System.out.println("ruleSet=" + ruleSet);
     System.out.println("tradHandi=" + tradHandi);
-    System.out.println("_gameRoot=" + _gameRoot);
+    System.out.println("gameRoot=" + gameRoot);
     System.out.println("handiLeft=" + handiLeft);
     System.out.println("gameOver=" + gameOver);
     System.out.println("whiteLast=" + whiteLast);
@@ -892,7 +841,7 @@ public class Game {
     System.out.println("markUndos=" + markUndos);
     System.out.println("toStringIsSGF=" + toStringIsSGF);
     System.out.println("*** dPrint of move list ***");
-    dPrintMoves(_gameRoot);
+    dPrintMoves(gameRoot);
   }
 
 }

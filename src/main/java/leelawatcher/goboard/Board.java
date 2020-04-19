@@ -35,10 +35,7 @@ import java.util.*;
  * saving the game in SGF FF[4].
  *
  * @author Patrick G. Heck
- * @version $Revision$
  */
-
-
 public class Board {
 
   private Game gm;
@@ -56,7 +53,6 @@ public class Board {
    * a fixed un-alterable characteristic of any game and never change
    * during or after a game.
    */
-
   public Board() {
     gm = new Game("White", "Black", 0, 5.5f); // for the moment stick in a
     positions = new ArrayList<>();              // default game.
@@ -75,7 +71,6 @@ public class Board {
    * @param handi     The handicap white has given to black.
    * @param komi      The compensation points black has given to white.
    */
-
   public void newGame(String nameWhite, String nameBlack,
                       int handi, float komi) {
     gm = new Game(nameWhite, nameBlack, handi, komi);
@@ -118,7 +113,6 @@ public class Board {
    * @return An iterator for positions played so far in this
    * variation.
    */
-
   public Iterator<Position> getPosIter() {
     return positions.iterator();
   }
@@ -135,7 +129,6 @@ public class Board {
    *
    * @return An integer board size.
    */
-
   public int getBoardSize() {
     int numlines = 0;
     String temp = gm.getBoardSize();
@@ -159,7 +152,6 @@ public class Board {
    * @param p A <code>PointOfPlay</code> object to be tested.
    * @return True if the point described is on the board.
    */
-
   public boolean isOnBoard(PointOfPlay p) {
     return ((p.getX() < getBoardSize()) && (p.getX() >= 0)
         && (p.getY() < getBoardSize()) && (p.getY() >= 0));
@@ -170,7 +162,6 @@ public class Board {
    *
    * @return True if white should play the next stone.
    */
-
   public boolean isWhiteMove() {
     return gm.isWMove();
   }
@@ -183,7 +174,6 @@ public class Board {
    *
    * @param filName A string name to which the file can be saved.
    */
-
   public void saveGame(String filName) {
     File gmfile = new File(filName);
     try {
@@ -245,7 +235,6 @@ public class Board {
    * @param x The horizontal coordinate at which to place the stone.
    * @param y The vertical coordinate at which to place the stone.
    */
-
   public void doMove(int x, int y) throws IllegalMoveException {
     PointOfPlay proposedMove = new PointOfPlay(x, y);
     boolean legalMove = ruleImp.isLegalMove(proposedMove, this);
@@ -302,20 +291,17 @@ public class Board {
    * <code>currPos</code>, and therefore modifications to it will
    * not be reflected on the board.
    *
-   * @return A clone of the current {@link Position position}
+   * @return A clone of the current {@link Position position} (we wouldn't want it modified directly!)
    */
-
-  public Position getCurrPos() // send out a copy of the current position
-  {                            // (we wouldn't want it modified directly!)
+  public Position getCurrPos() {
 
     Position temp = new Position();  // just to keep the compiler happy
 
-    try                              // now throw it away...
-    {
-      temp = (Position) positions.get(currPos).clone();
+    try {
+        temp = (Position) positions.get(currPos).clone();
     } catch (CloneNotSupportedException e) {
-      e.printStackTrace();
-      System.exit(0);                 // don't even try to recover from this!
+        e.printStackTrace();
+        System.exit(0);                 // don't even try to recover from this!
     }
     return temp;
   }
@@ -332,7 +318,6 @@ public class Board {
    *          group in question.
    * @return The number of liberties of the group at point p
    */
-
   @SuppressWarnings("WeakerAccess")
   public int countLiberties(PointOfPlay p) {
     return ruleImp.countLibs(p, 0, null, this);
@@ -403,7 +388,6 @@ public class Board {
    * a group.
    * @see MarkablePosition#getGroupSet
    */
-
   private Set<PointOfPlay> enumerateGroup(PointOfPlay p) {
     return getGroupSet(p);
   }
@@ -417,7 +401,6 @@ public class Board {
    *          group in question.
    * @see MarkablePosition#getGroupSet(PointOfPlay, Set, int)
    */
-
   private Set<PointOfPlay> getGroupSet(PointOfPlay p) {
     MarkablePosition temp = new MarkablePosition(getCurrPos());
     return temp.getGroupSet(p, null, getBoardSize());
@@ -448,9 +431,3 @@ public class Board {
     }
   }
 }
-
-
-
-
-
-

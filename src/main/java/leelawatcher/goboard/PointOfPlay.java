@@ -20,30 +20,19 @@ import leelawatcher.goboard.move.Move;
 /**
  * The location of a point on a go board.
  * <p>
- * <code>_x</code> generally represents horizontal distance along the
- * edge of the board and <code>_y</code> generally represents vertical
- * distance along the edge of the board. Both of these are normally
- * thought of as describing points as if on a cartesian plane with the
- * lower left corner of the board being 0,0. This representation is
- * used for internal referencing of locations in a {@link Position}
- * object and thus no attempt to model the common convention in
- * publications on Go of assigning a letter to the horizontal coordinate
- * and a number to the vertical coordinate. That functionality is to be
- * found in the {@link Move} class. This class is an immutable abstract
- * data class.
+ * <code>x</code> represents horizontal distance along the edge of the board and <code>y</code> represents vertical
+ * distance along the edge of the board. Both of these describe points as if on a cartesian plane with the
+ * lower left corner of the board being 0,0. This representation is used for internal referencing of locations.
+ * No attempt is made to model the common convention in publications on Go of assigning a letter to the
+ * horizontal coordinate and a number to the vertical coordinate. That functionality is to be
+ * found in the {@link Move} class. This class is an immutable abstract data class.
  *
  * @author Patrick G. Heck
- * @version 0.1
  */
+public class PointOfPlay implements Cloneable {
 
-public class PointOfPlay implements Cloneable
-
-{
-  private static int numInstances = 0;
-  private int _numThis;
-
-  private int _x;
-  private int _y;
+  private final int x;
+  private final int y;
 
   /**
    * Creates a point at the given (cartesian) coordinates.
@@ -51,27 +40,22 @@ public class PointOfPlay implements Cloneable
    * argument exception will be thrown if negatives are passed to this
    * constructor.
    *
-   * @param xcoor horizontal displacement from the lower left corner
-   *              of the board.
-   * @param ycoor vertical displacement from the lower left corner of
-   *              the board.
+   * @param xcoor horizontal displacement from the lower left corner of the board.
+   * @param ycoor vertical displacement from the lower left corner of the board.
    * @throws IllegalArgumentException if either coordinate is negative
    */
-
   public PointOfPlay(int xcoor, int ycoor) {
-    _numThis = numInstances;
-    numInstances++;
 
-    if ((_x < 0) || (_y < 0)) {
+    if (xcoor < -1 || ycoor < -1) {
       String msg = "Can't create negative Point of Play!";
       throw new IllegalArgumentException(msg);
     }
-    _x = xcoor;
-    _y = ycoor;
+    x = xcoor;
+    y = ycoor;
   }
 
   /**
-   * Provdies a logical test for equality between PointOfPlay objects.
+   * Provides a logical test for equality between PointOfPlay objects.
    * <p>
    * PointOfPlay objects are considered equal if the <code>_x</code> and
    * <code>_y</code> members are equal.
@@ -80,7 +64,6 @@ public class PointOfPlay implements Cloneable
    * @return <code>true</code> if <code>this</code> and
    * <code>aPoint</code> are both equal
    */
-
   public boolean equals(Object aPoint) {
     PointOfPlay tmp;
     if (aPoint instanceof PointOfPlay)
@@ -88,7 +71,7 @@ public class PointOfPlay implements Cloneable
     else
       return false;
 
-    return (tmp._x == this._x && tmp._y == this._y);
+    return (tmp.x == this.x && tmp.y == this.y);
   }
 
   /**
@@ -97,17 +80,16 @@ public class PointOfPlay implements Cloneable
    * <p>
    * <code>_x</code> and <code>_y</code> contribute to the hash value
    * produced by this method. The algorithm is suggested in Effective Java
-   * by Joushua Bloch (2001).
+   * by Joshua Bloch (2001).
    *
    * @return An integer that is constant for all
    * <code>PointOfPlay</code> objects that are equal
    * according to <code>PointOfPlay.equals</code>.
    */
-
   public int hashCode() {
     int result = 17;
-    result = 37 * result + _x;
-    result = 37 * result + _y;
+    result = 37 * result + x;
+    result = 37 * result + y;
     return result;
   }
 
@@ -124,9 +106,8 @@ public class PointOfPlay implements Cloneable
    *
    * @return A string 5-23 characters in length with no whitespace.
    */
-
   public String toString() {
-    return "(" + _x + "," + _y + ")";
+    return "(" + x + "," + y + ")";
   }
 
   /**
@@ -134,9 +115,8 @@ public class PointOfPlay implements Cloneable
    *
    * @return The horizontal displacement from the lower left corner
    */
-
   public int getX() {
-    return _x;
+    return x;
   }
 
   /**
@@ -144,25 +124,7 @@ public class PointOfPlay implements Cloneable
    *
    * @return The vertical displacement from the lower left corner
    */
-
   public int getY() {
-    return _y;
-  }
-
-  /**
-   * Outputs the contents of all variables in the class for debugging.
-   * <p>
-   * This is for debugging purposes only. The output is of the form
-   * variable_name=variable_value for each variable in the class.
-   * The output for each variable is seperated by a newline, and all
-   * output is sent directly to standard output via
-   * <code>System.out.println</code>
-   */
-  @SuppressWarnings("unused")
-  public void dPrint() {
-    System.out.println("_x=" + _x);
-    System.out.println("_y=" + _y);
-    System.out.println("numInstances=" + numInstances);
-    System.out.println("_numThis=" + _numThis);
+    return y;
   }
 }

@@ -80,23 +80,21 @@ import java.util.stream.IntStream;
  * <p>
  * <p>FIXME: This class probably should be immutable but is not.
  * <p>TODO: Recode this with array of char (or byte) and compare speed. Another
- * possibility is using java1.4 ByteBuffers which would be more flexable for
+ * possibility is using java1.4 ByteBuffers which would be more flexible for
  * oversized boards, but harder to code.
- * <p>TODO: This class currently is one of the key limmitations preventing
+ * <p>TODO: This class currently is one of the key limitations preventing
  * alternate board sizes. The magic number in colmasks, posBlack and posWhite
  * need to be abstracted.
  *
  * @author Patrick G. Heck
- * @version $Revision$
  */
-
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class Position implements Cloneable {
   public final static int[] colMasks = new int[19];        // bit fields
 
   private static int numInstances = 0;
-  private int numThis;
+  private final int numThis;
 
   private int moveNum; // to associate this Position with a move in the game.
 

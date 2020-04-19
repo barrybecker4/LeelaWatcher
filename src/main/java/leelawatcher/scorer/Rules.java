@@ -32,7 +32,5 @@ public interface Rules {
   boolean isLegalMove(PointOfPlay p, Board board);
 
   int countLibs(PointOfPlay p, int counter, MarkablePosition m, Board board);
-    /*	  public boolean isGroupCaptured(PointOfPlay p);
-    public position moveResult(PointOfPlay p);
-    */
+
 }

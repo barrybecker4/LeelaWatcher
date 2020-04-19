@@ -37,9 +37,6 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 
 
-/**
- * @author root
- */
 public class ImageMaker implements TsbConstants {
 
   // drawing fine tuning
@@ -55,8 +52,8 @@ public class ImageMaker implements TsbConstants {
 
   // globalInfo contains file names for images
 
-  private BufferedImage BoardBackground;
-  private Canvas someComp = new Canvas();  // need an image observer...
+  private final BufferedImage BoardBackground;
+  private final Canvas someComp = new Canvas();  // need an image observer...
 
   /**
    * Creates new ImageMaker
@@ -70,12 +67,11 @@ public class ImageMaker implements TsbConstants {
 
   public BufferedImage loadBackground(URL imageLoc) {
 
-    // create a place to hold the background pixmap for the board
+    // create a place to hold the background pixel map for the board
     Image i;
     BufferedImage B;
     int H, W;
     Graphics2D G;
-
 
     i = Toolkit.getDefaultToolkit().getImage(imageLoc);
 

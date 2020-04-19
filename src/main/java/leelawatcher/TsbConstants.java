@@ -22,7 +22,6 @@ package leelawatcher;
  * should be defined here.
  *
  * @author Patrick G. Heck
- * @version $Revision$
  */
 
 public interface TsbConstants {
@@ -43,21 +42,3 @@ public interface TsbConstants {
    */
   String BRD_BACKGRD = "images/wd-back.gif";
 }
-
-/*
- * $Log$
- * Revision 1.3  2003/07/19 03:08:07  gus
- * added PROG_NAME constant
- *
- * Revision 1.2  2003/07/19 02:50:04  gus
- * New License based on the Apache License, Yeah open source :)
- *
- * Revision 1.1.1.1  2002/12/15 07:02:56  gus
- * Initial import into cvs server running on Aptiva
- *
- * Revision 1.1  2002/04/16 02:08:59  togo
- * Migrated globalInfo.java to TsbConstants.java, and fixed refering files.
- * Also found remaining references to board.java and cleaned them up. Removed
- * board.java (which has been replaced by Board.java).
- *
- */

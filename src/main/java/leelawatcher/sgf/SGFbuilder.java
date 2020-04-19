@@ -20,42 +20,38 @@ import leelawatcher.TsbConstants;
 import leelawatcher.goboard.Game;
 import leelawatcher.goboard.move.Move;
 
-// This class is meant to simply provide a routine for converting a game object
-// to a string that conforms to SGF FF[4]. game.java extends this class
-
+/**
+ * This class is meant to simply provide a routine for converting a game object
+ * to a string that conforms to SGF FF[4]. game.java extends this class
+ */
 public class SGFbuilder implements SGFproperties, TsbConstants {
 
   public SGFbuilder() {
-  }            // later this may dictate format to be
-  // written. i.e. FF[3] or earlier
-  // instead of current FF[4]
-
+  }
 
   public String SGFprintMoves(Move aMove) {
-    String tmp = "";
+    StringBuilder tmp = new StringBuilder("");
     int numChild = aMove.numChildren();
 
     for (int i = 0; i < numChild; i++) {
       if ((i == 0) && !aMove.isRoot()) {
-        tmp += ";";
-        tmp += aMove;
+        tmp.append(";").append(aMove);
       }
 
       if (numChild > 1)
-        tmp += "(";
+        tmp.append("(");
 
       if (aMove.next() != aMove)               // if shouldn't be needed
-        tmp += SGFprintMoves(aMove.next(i)); // due to for loop, but...
+        tmp.append(SGFprintMoves(aMove.next(i))); // due to for loop, but...
 
       if (numChild > 1)
-        tmp += ")";
+        tmp.append(")");
     }
 
     if (numChild == 0)
-      tmp += ";" + aMove;
+      tmp.append(";").append(aMove);
 
-    return tmp;
-
+    return tmp.toString();
   }
 
 

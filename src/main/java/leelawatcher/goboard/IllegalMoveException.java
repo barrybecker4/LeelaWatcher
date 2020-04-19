@@ -1,8 +1,8 @@
 package leelawatcher.goboard;
 
 public class IllegalMoveException extends Exception {
-  private PointOfPlay proposedMove;
-  private Position position;
+  private final PointOfPlay proposedMove;
+  private final Position position;
 
   IllegalMoveException(PointOfPlay proposedMove, Position position) {
     super("Illegal move:" + proposedMove + "\nPosition:\n" + position);

@@ -25,17 +25,17 @@ package leelawatcher.gui;
  */
 public class SGFFileFilter extends javax.swing.filechooser.FileFilter {
 
-  /**
-   * Creates a new instance of SGFFileFilter
-   */
-  public SGFFileFilter() {
-  }
+    /**
+     * Creates a new instance of SGFFileFilter
+     */
+    public SGFFileFilter() {
+    }
 
-  public boolean accept(java.io.File file) {
-    return file.getName().toUpperCase().endsWith(".SGF");
-  }
+    public boolean accept(java.io.File file) {
+        return file.getName().toUpperCase().endsWith(".SGF");
+    }
 
-  public String getDescription() {
+    public String getDescription() {
     return "Smart Go Format";
   }
 }
