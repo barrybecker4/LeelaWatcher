@@ -1,7 +1,8 @@
 # LeelaWatcher
-A GUI for watching Leela Zero self train
+A GUI for watching Leela Zero self train.
+![Screenshot](leelaWatcher.png)
 
-Please note that this is a fairly quick hack, and I resurected code I wrote 15 years ago when I first learned java, so there's a bunch of warts in the code, but with that caveat LeelaWatcher provides the following features:
+LeelaWatcher provides the following features:
 
 1. Executes [Leela Zero](https://github.com/gcp/leela-zero)'s autogtp cooperative training mode
 1. Parses the standard output from the training sesion to extract the moves
